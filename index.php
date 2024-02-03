@@ -1,3 +1,27 @@
+<?php
+
+function sanitize_output($buffer) {
+    $search = array(
+        '/\n(\s+)?\/\/[^\n]*/',
+        '/\>[^\S ]+/s',
+        '/[^\S ]+\</s',
+        '/(\s)+/s',
+        '/\s+|\n+|\r/',
+        '/<!--(.|\s)*?-->/'
+    );
+    $replace = array(
+        '',
+        '>',
+        '<',
+        '\\1',
+        ' ',
+        ''
+    );
+    $buffer = preg_replace($search, $replace, $buffer);
+    return $buffer;
+}
+ob_start("sanitize_output");
+?>
 <!DOCTYPE html>
 <html lang="it" dir="ltr">
 <head>
